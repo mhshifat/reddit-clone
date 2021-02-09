@@ -3,7 +3,7 @@
 	"host": "localhost",
 	"port": 5432,
 	"username": "postgres",
-	"password": "Mhshifat96",
+	"password": "root",
 	"database": "reddit-clone",
 	"synchronize": false,
 	"logging": false,
