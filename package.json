@@ -41,6 +41,8 @@
   },
   "scripts": {
     "start": "node ./build",
+    "build": "tsc -p .",
+    "prestart": "yarn build",
     "serve:client": "cd client && yarn dev",
     "serve:server": "nodemon --exec ts-node src/index.ts",
     "serve": "concurrently --kill-others \"yarn serve:server\" \"yarn serve:client\" --names server,client",
