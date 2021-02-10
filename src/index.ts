@@ -10,15 +10,16 @@ import authRoutes from "./routes/auth";
 import miscRoutes from "./routes/misc";
 import postRoutes from "./routes/posts";
 import subRoutes from "./routes/subs";
+import userRoutes from "./routes/users";
 
 const app = express();
 
 app.use(
-	cors({
-		origin: process.env.CORS_ORIGIN,
-		credentials: true,
-		optionsSuccessStatus: 200,
-	})
+  cors({
+    origin: process.env.CORS_ORIGIN,
+    credentials: true,
+    optionsSuccessStatus: 200,
+  })
 );
 app.use(morgan("dev"));
 app.use(cookieParser());
@@ -31,14 +32,15 @@ app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/subs", subRoutes);
 app.use("/api/misc", miscRoutes);
+app.use("/api/users", userRoutes);
 
 app.listen(process.env.PORT, async () => {
-	console.log(`Server is running at http://localhost:${process.env.PORT}`);
+  console.log(`Server is running at http://localhost:${process.env.PORT}`);
 
-	try {
-		await createConnection();
-		console.log("Database connected");
-	} catch (err) {
-		console.error(err);
-	}
+  try {
+    await createConnection();
+    console.log("Database connected");
+  } catch (err) {
+    console.error(err);
+  }
 });

@@ -3,31 +3,42 @@ import classNames from "classnames";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Link from "next/link";
-import React from "react";
+import React, { Fragment } from "react";
 import { IPost } from "../types";
 import ActionButton from "./ActionButton";
+import { useAuthState } from "../context/auth";
+import { useRouter } from "next/router";
+import { route } from "next/dist/next-server/server/router";
 
 dayjs.extend(relativeTime);
 
 interface Props {
   post: IPost;
+  revalidate?: Function;
 }
 
-const PostCard: React.FC<Props> = ({ post }) => {
+const PostCard: React.FC<Props> = ({ post, revalidate }) => {
+  const router = useRouter();
+  const { authenticated } = useAuthState();
+
+  const isInSubPage = router.pathname === "/r/[sub]";
   const vote = async (value: number) => {
+    if (!authenticated) router.push("/login");
+    if (value === post.userVote) value = 0;
     try {
       const res = await axios.post("/misc/vote", {
         identifier: post.identifier,
         slug: post.slug,
         value,
       });
+      if (revalidate) revalidate();
     } catch (err) {
       console.error(err);
     }
   };
 
   return (
-    <div className="flex mb-4 bg-white rounded">
+    <div id={post.identifier} className="flex mb-4 bg-white rounded">
       <div className="w-10 py-3 text-center bg-gray-200 rounded-l">
         <div
           onClick={() => vote(1)}
@@ -54,21 +65,24 @@ const PostCard: React.FC<Props> = ({ post }) => {
 
       <div className="w-full p-2">
         <div className="flex items-center">
-          <Link href={`/r/${post.subName}`}>
-            <img
-              src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
-              alt=""
-              className="w-6 h-6 mr-1 rounded-full cursor-pointer"
-            />
-          </Link>
-          <Link href={`/r/${post.subName}`}>
-            <a className="text-xs font-bold cursor-pointer hover:underline">
-              /r/{post.subName}
-            </a>
-          </Link>
+          {!isInSubPage && (
+            <Fragment>
+              <Link href={`/r/${post.subName}`}>
+                <img
+                  src={post.sub.imageUrl}
+                  alt=""
+                  className="w-6 h-6 mr-1 rounded-full cursor-pointer"
+                />
+              </Link>
+              <Link href={`/r/${post.subName}`}>
+                <a className="text-xs font-bold cursor-pointer hover:underline">
+                  /r/{post.subName}
+                </a>
+              </Link>
+            </Fragment>
+          )}
 
           <p className="text-xs text-gray-500">
-            <span className="mx-1">•</span>
             Posted By
             <Link href={`/u/${post.username}`}>
               <a className="mx-1 hover:underline">/u/{post.username}</a>

@@ -35,7 +35,9 @@ const Sub = () => {
   ) : sub.posts.length === 0 ? (
     <p className="text-lg text-center">No posts found yet...</p>
   ) : (
-    sub.posts.map((post) => <PostCard key={post.identifier} post={post} />)
+    sub.posts.map((post) => (
+      <PostCard key={post.identifier} post={post} revalidate={revalidate} />
+    ))
   );
   const openFileInput = (type: string) => {
     if (!ownSub) return;

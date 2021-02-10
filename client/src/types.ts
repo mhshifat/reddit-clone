@@ -37,3 +37,15 @@ export interface ISub {
   bannerUrl?: string;
   postCount?: number;
 }
+
+export interface IComment {
+  body: string;
+  username: string;
+  identifier: string;
+  createdAt: string;
+  updatedAt: string;
+  post: IPost;
+
+  userVote?: number;
+  voteScore?: number;
+}
