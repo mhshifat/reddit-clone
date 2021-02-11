@@ -1,7 +1,20 @@
-# Awesome Project Build with TypeORM
+# Reddit Clone
 
-Steps to run this project:
+A simple reddit clone.
 
-1. Run `npm i` command
-2. Setup database settings inside `ormconfig.json` file
-3. Run `npm start` command
+### Demo Link
+
+link: [https://reddit-clone-puce.vercel.app/](https://reddit-clone-puce.vercel.app/)
+
+### Technologies Used
+
+- NodeJS
+- PostgresSQL
+- TypeScript
+- ReactJS
+- NextJS
+- REST API
+
+### License
+
+[MIT](https://choosealicense.com/licenses/mit/)
